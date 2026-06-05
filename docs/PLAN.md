@@ -66,23 +66,25 @@
 
 ---
 
-## M2 — Leads UI
+## Aula 2.3 — Gestão de Leads UI
 
-**Branch:** `feat/m2-leads-ui`
+**Branch:** `feat/m2-leads-ui` → merged em `main`
 **Objetivo:** Construir todas as telas de gestão de leads com dados mockados em memória. Nenhuma chamada ao Supabase ainda.
 
 ### Entregas
 
-- [ ] `types/lead.ts` — tipo `Lead` com todos os campos do PRD + Zod schema
-- [ ] `app/(app)/leads/page.tsx` — listagem com tabela compacta (`text-sm`)
-- [ ] `components/leads/LeadTable.tsx` — colunas: nome, empresa, status, responsável, data, ações
-- [ ] `components/leads/LeadFilters.tsx` — barra de busca + filtros por status e responsável
-- [ ] `app/(app)/leads/new/page.tsx` + `components/leads/LeadForm.tsx` — formulário de criação (react-hook-form + Zod)
-- [ ] `app/(app)/leads/[id]/page.tsx` — página de detalhe com perfil completo
-- [ ] `components/leads/LeadProfile.tsx` — card com todos os dados do lead
-- [ ] `components/leads/ActivityTimeline.tsx` — timeline cronológica (mock vazio por ora)
-- [ ] Badge de status com cores: Novo (blue), Contato Realizado (yellow), Proposta (purple), Negociação (orange), Ganho (green), Perdido (red)
-- [ ] Estado vazio ("Nenhum lead cadastrado") com CTA para criar
+- [x] `types/lead.ts` — tipo `Lead` com todos os campos + Zod schema + 15 mock leads brasileiros
+- [x] `app/(app)/leads/page.tsx` — listagem com tabela compacta (`text-sm`)
+- [x] `components/leads/LeadTable.tsx` — colunas: nome, empresa, status, responsável, data, ações
+- [x] `components/leads/LeadFilters.tsx` — busca por nome/empresa + filtros por status (chips)
+- [x] `app/(app)/leads/new/page.tsx` + `components/leads/LeadForm.tsx` — formulário de criação (react-hook-form + Zod)
+- [x] `app/(app)/leads/[id]/page.tsx` — página de detalhe com perfil completo
+- [x] `components/leads/LeadProfile.tsx` — card com todos os dados do lead
+- [x] `components/leads/ActivityTimeline.tsx` — timeline cronológica (mock com atividades reais)
+- [x] Badge de status com cores: Novo (blue), Contato Realizado (yellow), Proposta (purple), Negociação (orange), Ganho (green), Perdido (red)
+- [x] Estado vazio ("Nenhum lead encontrado") com mensagem contextual
+- [x] CRUD completo em estado local: criar via Sheet, editar via Sheet, excluir via ConfirmDialog
+- [x] Primitivas: `components/ui/select.tsx`, `textarea.tsx`, `dialog.tsx`
 
 **Commit final:** `feat: leads UI with table, filters, form, and detail page (mock data)`
 
