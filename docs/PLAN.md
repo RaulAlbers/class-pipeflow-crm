@@ -32,15 +32,15 @@
 
 ### Entregas
 
-- [ ] Layout `app/(app)/layout.tsx` com sidebar fixa à esquerda e área de conteúdo
-- [ ] `components/shared/Sidebar.tsx` com navegação: Dashboard, Leads, Pipeline, Atividades, Configurações
-- [ ] `components/shared/WorkspaceSwitcher.tsx` com dropdown de workspaces (mock)
-- [ ] `components/shared/UserMenu.tsx` com avatar, nome e botão sair
-- [ ] `components/shared/TopBar.tsx` com título da página atual e ações contextuais
-- [ ] Definir tokens de cor no `globals.css`: `--primary` (indigo-600), `--success` (green-600), `--danger` (red-600), `--muted` (gray-500)
-- [ ] Página placeholder para cada rota do app (`/dashboard`, `/leads`, `/pipeline`, `/activities`, `/settings`)
-- [ ] Layout responsivo: sidebar colapsável em mobile (Sheet do shadcn/ui)
-- [ ] Favicon e metadata base em `app/layout.tsx`
+- [x] Layout `app/(app)/layout.tsx` com sidebar fixa à esquerda e área de conteúdo
+- [x] `components/shared/Sidebar.tsx` com navegação: Dashboard, Leads, Pipeline, Atividades, Configurações
+- [x] `components/shared/WorkspaceSwitcher.tsx` com dropdown de workspaces (mock)
+- [x] `components/shared/UserMenu.tsx` com avatar, nome e botão sair
+- [x] `components/shared/TopBar.tsx` com título da página atual e ações contextuais
+- [x] Definir tokens de cor no `globals.css`: `--primary` (indigo-500), `--success` (green-700), `--danger` (red-600), `--muted` (zinc-500)
+- [x] Página placeholder para cada rota do app (`/dashboard`, `/leads`, `/pipeline`, `/activities`, `/settings`)
+- [x] Layout responsivo: sidebar colapsável em mobile (Sheet do shadcn/ui)
+- [x] Favicon e metadata base em `app/layout.tsx`
 
 **Commit final:** `feat: app shell with sidebar, workspace switcher, and design tokens`
 

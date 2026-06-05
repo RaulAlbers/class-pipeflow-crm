@@ -35,7 +35,7 @@ export function WorkspaceSwitcher() {
         </button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-56" align="start" side="right" sideOffset={8}>
+      <DropdownMenuContent className="w-56" align="start" side="bottom" sideOffset={4}>
         <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
         <DropdownMenuSeparator />
 

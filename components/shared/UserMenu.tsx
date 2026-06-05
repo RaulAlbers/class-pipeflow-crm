@@ -40,7 +40,7 @@ export function UserMenu() {
         </button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-56" align="end" side="right" sideOffset={8}>
+      <DropdownMenuContent className="w-56" align="start" side="top" sideOffset={8}>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col">
             <span className="text-sm font-medium text-text">{MOCK_USER.name}</span>
