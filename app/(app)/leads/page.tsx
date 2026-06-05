@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
-import { Users } from "lucide-react";
+import { LeadsView } from "@/components/leads/LeadsView";
 
-export const metadata: Metadata = { title: "Leads" };
+export const metadata: Metadata = { title: "Leads — PipeFlow" };
 
 export default function LeadsPage() {
-  return (
-    <div className="flex flex-col items-center justify-center h-64 gap-3 rounded-lg border border-dashed border-border text-center">
-      <Users className="h-8 w-8 text-text-muted" />
-      <p className="text-sm font-medium text-text-subtle">Leads</p>
-      <p className="text-xs text-text-muted">Tabela de leads em breve — M2</p>
-    </div>
-  );
+  return <LeadsView />;
 }
