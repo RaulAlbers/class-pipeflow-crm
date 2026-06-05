@@ -1,26 +1,104 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* ─── PipeFlow Design Tokens ─────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Surfaces */
+  --color-bg:             #09090b; /* zinc-950 — main background  */
+  --color-surface:        #18181b; /* zinc-900 — cards, popovers  */
+  --color-sidebar:        #111113; /* slightly darker than surface */
+  --color-overlay:        #27272a; /* zinc-800 — hover, inputs     */
+
+  /* Borders */
+  --color-border:         #27272a; /* zinc-800                     */
+  --color-border-subtle:  #3f3f46; /* zinc-700                     */
+
+  /* Text */
+  --color-text:           #f4f4f5; /* zinc-100                     */
+  --color-text-muted:     #71717a; /* zinc-500                     */
+  --color-text-subtle:    #a1a1aa; /* zinc-400                     */
+
+  /* Brand / Accent */
+  --color-primary:        #6366f1; /* indigo-500                   */
+  --color-primary-hover:  #4f46e5; /* indigo-600                   */
+  --color-primary-subtle: #1e1b4b; /* indigo-950                   */
+
+  /* Semantic */
+  --color-success:        #16a34a; /* green-700                    */
+  --color-danger:         #dc2626; /* red-600                      */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base ───────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  border-color: #27272a;
+}
+
+html {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #09090b;
+  color: #f4f4f5;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* ─── Scrollbar ──────────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: #3f3f46; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+/* ─── Radix UI / tw-animate-css utilities ───────────────────────── */
+/* tailwindcss-animate não está instalado; definimos manualmente     */
+@keyframes tw-enter {
+  from {
+    opacity: var(--tw-enter-opacity, 1);
+    transform:
+      translate3d(var(--tw-enter-translate-x, 0), var(--tw-enter-translate-y, 0), 0)
+      scale3d(var(--tw-enter-scale, 1), var(--tw-enter-scale, 1), var(--tw-enter-scale, 1))
+      rotate(var(--tw-enter-rotate, 0));
+  }
+}
+@keyframes tw-exit {
+  to {
+    opacity: var(--tw-exit-opacity, 1);
+    transform:
+      translate3d(var(--tw-exit-translate-x, 0), var(--tw-exit-translate-y, 0), 0)
+      scale3d(var(--tw-exit-scale, 1), var(--tw-exit-scale, 1), var(--tw-exit-scale, 1))
+      rotate(var(--tw-exit-rotate, 0));
+  }
+}
+
+.animate-in {
+  animation-name: tw-enter;
+  animation-duration: 150ms;
+  animation-fill-mode: both;
+  --tw-enter-opacity: initial;
+  --tw-enter-scale: initial;
+  --tw-enter-rotate: initial;
+  --tw-enter-translate-x: initial;
+  --tw-enter-translate-y: initial;
+}
+.animate-out {
+  animation-name: tw-exit;
+  animation-duration: 150ms;
+  animation-fill-mode: both;
+  --tw-exit-opacity: initial;
+  --tw-exit-scale: initial;
+  --tw-exit-rotate: initial;
+  --tw-exit-translate-x: initial;
+  --tw-exit-translate-y: initial;
+}
+
+.fade-in-0              { --tw-enter-opacity: 0; }
+.fade-out-0             { --tw-exit-opacity: 0; }
+.zoom-in-95             { --tw-enter-scale: .95; }
+.zoom-out-95            { --tw-exit-scale: .95; }
+.slide-in-from-top-2    { --tw-enter-translate-y: -0.5rem; }
+.slide-in-from-bottom-2 { --tw-enter-translate-y: 0.5rem; }
+.slide-in-from-left-2   { --tw-enter-translate-x: -0.5rem; }
+.slide-in-from-right-2  { --tw-enter-translate-x: 0.5rem; }
