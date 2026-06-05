@@ -46,6 +46,26 @@
 
 ---
 
+## Aula 2.2 — Auth & Onboarding UI
+
+**Branch:** `feat/m2-auth-onboarding-ui` → merged em `main`
+**Objetivo:** Construir as telas de autenticação e onboarding como UI pura — sem Supabase ainda. Navegação fake para validar fluxo visual.
+
+### Entregas
+
+- [x] `types/auth.ts` — schemas Zod: loginSchema, registerSchema, forgotPasswordSchema, onboardingSchema
+- [x] `components/ui/input.tsx` e `components/ui/label.tsx` — primitivas de formulário
+- [x] `app/(auth)/layout.tsx` — layout split-screen: painel de brand (desktop) + área de formulário
+- [x] `app/(auth)/login/page.tsx` — email/senha, validação, loading, redirect fake → `/dashboard`
+- [x] `app/(auth)/register/page.tsx` — 4 campos, validação de mismatch de senhas, redirect → `/onboarding`
+- [x] `app/(auth)/forgot-password/page.tsx` — campo de e-mail, loading, estado de sucesso com "tente novamente"
+- [x] `app/(app)/onboarding/page.tsx` — step 1/3: nome do workspace, stepper visual, redirect → `/dashboard`
+- [x] `app/page.tsx` — redirect `/` → `/login`
+
+**Commit final:** `feat: auth UI and onboarding with form validation and fake navigation`
+
+---
+
 ## M2 — Leads UI
 
 **Branch:** `feat/m2-leads-ui`
@@ -121,9 +141,9 @@
 - [ ] `lib/supabase/server.ts` — server client com `createServerClient` (cookies)
 - [ ] `middleware.ts` — refresh de sessão + redirect para `/login` se não autenticado
 - [ ] Schema SQL inicial: tabelas `profiles`, `workspaces`, `workspace_members`
-- [ ] `app/(auth)/login/page.tsx` — tela de login com email/senha
-- [ ] `app/(auth)/register/page.tsx` — tela de cadastro
-- [ ] `app/(auth)/forgot-password/page.tsx` — recuperação de senha
+- [x] `app/(auth)/login/page.tsx` — tela de login com email/senha _(UI criada na Aula 2.2 — conectar Supabase aqui)_
+- [x] `app/(auth)/register/page.tsx` — tela de cadastro _(UI criada na Aula 2.2 — conectar Supabase aqui)_
+- [x] `app/(auth)/forgot-password/page.tsx` — recuperação de senha _(UI criada na Aula 2.2 — conectar Supabase aqui)_
 - [ ] Server Action: criar workspace ao confirmar primeiro cadastro
 - [ ] Substituir mock do `WorkspaceSwitcher` por dados reais do usuário logado
 - [ ] RLS policies: `workspaces` e `workspace_members` isoladas por `user_id`
@@ -259,7 +279,7 @@
 
 ### Entregas
 
-- [ ] `app/(app)/onboarding/page.tsx` — fluxo de 3 etapas: nome do workspace → convidar membro → criar primeiro lead
+- [x] `app/(app)/onboarding/page.tsx` — step 1 (nome do workspace) UI criada na Aula 2.2 — completar steps 2 e 3 + persistência aqui
 - [ ] Salvar flag `onboarding_completed` em `profiles`
 - [ ] Middleware redireciona para `/onboarding` se flag for false após login
 - [ ] Componente `OnboardingProgress` com steps visuais
