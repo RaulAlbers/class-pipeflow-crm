@@ -90,23 +90,23 @@
 
 ---
 
-## M3 — Kanban UI
+## Aula 2.4 — Kanban UI
 
-**Branch:** `feat/m3-kanban-ui`
+**Branch:** `feat/m3-kanban-ui` → merged em `main`
 **Objetivo:** Construir o board Kanban com drag-and-drop funcional em estado local — sem persistência ainda.
 
 ### Entregas
 
-- [ ] `types/deal.ts` — tipo `Deal` com título, valor, lead vinculado, responsável, prazo, etapa
-- [ ] `app/(app)/pipeline/page.tsx` — página do board
-- [ ] `components/kanban/KanbanBoard.tsx` — container com `DndContext` do @dnd-kit
-- [ ] `components/kanban/KanbanColumn.tsx` — coluna por etapa com `SortableContext`
-- [ ] `components/kanban/DealCard.tsx` — card compacto com título, valor formatado (R$), avatar do responsável e prazo
-- [ ] 6 colunas fixas: Novo Lead · Contato Realizado · Proposta Enviada · Negociação · Fechado Ganho · Fechado Perdido
-- [ ] Drag-and-drop entre colunas com animação suave (`@dnd-kit/sortable`)
-- [ ] Indicador de total de valor por coluna (soma dos deals)
-- [ ] Modal/sheet de criação de deal (`components/kanban/DealForm.tsx`)
-- [ ] Estado vazio por coluna com botão "+" para adicionar deal
+- [x] `types/deal.ts` — tipo `Deal` com título, valor, lead vinculado, responsável, prazo, etapa
+- [x] `app/(app)/pipeline/page.tsx` — página do board
+- [x] `components/kanban/KanbanBoard.tsx` — container com `DndContext` do @dnd-kit
+- [x] `components/kanban/KanbanColumn.tsx` — coluna por etapa com `SortableContext`
+- [x] `components/kanban/DealCard.tsx` — card compacto com título, valor formatado (R$), avatar do responsável e prazo
+- [x] 6 colunas fixas: Novo Lead · Contato Realizado · Proposta Enviada · Negociação · Fechado Ganho · Fechado Perdido
+- [x] Drag-and-drop entre colunas com animação suave (`@dnd-kit/sortable`)
+- [x] Indicador de total de valor por coluna (soma dos deals)
+- [x] Modal/sheet de criação de deal (`components/kanban/DealForm.tsx`)
+- [x] Estado vazio por coluna com botão "+" para adicionar deal
 
 **Commit final:** `feat: kanban board with drag-and-drop (local state, no persistence yet)`
 
