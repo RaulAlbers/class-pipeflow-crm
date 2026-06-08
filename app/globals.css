@@ -46,6 +46,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ─── Scroll ────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
 /* ─── Scrollbar ──────────────────────────────────────────────────── */
 ::-webkit-scrollbar        { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track  { background: transparent; }
@@ -102,3 +107,19 @@ body {
 .slide-in-from-bottom-2 { --tw-enter-translate-y: 0.5rem; }
 .slide-in-from-left-2   { --tw-enter-translate-x: -0.5rem; }
 .slide-in-from-right-2  { --tw-enter-translate-x: 0.5rem; }
+
+/* ─── Landing Page Animations ────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glow-breathe {
+  0%, 100% { transform: scale(1);    opacity: 0.18; }
+  50%       { transform: scale(1.08); opacity: 0.32; }
+}
+
+@keyframes shimmer-line {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
