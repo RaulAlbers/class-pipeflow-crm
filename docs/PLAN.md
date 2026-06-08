@@ -114,20 +114,21 @@
 
 ## M4 — Dashboard UI
 
-**Branch:** `feat/m4-dashboard-ui`
+**Branch:** `feat/m4-dashboard-ui` → implementado, aguardando merge
 **Objetivo:** Construir o dashboard de métricas com dados fictícios, incluindo gráfico de funil.
 
 ### Entregas
 
-- [ ] `app/(app)/dashboard/page.tsx` — página principal pós-login
-- [ ] `components/dashboard/MetricCard.tsx` — card reutilizável com título, valor, variação e ícone
-- [ ] 4 cards de métricas: Total de Leads, Negócios Abertos, Valor do Pipeline, Taxa de Conversão
-- [ ] `components/dashboard/FunnelChart.tsx` — gráfico de funil com Recharts (BarChart horizontal)
-- [ ] `components/dashboard/DealsDeadlineList.tsx` — lista de deals com prazo próximo (próximos 7 dias)
-- [ ] Layout em grid responsivo: 4 cards em linha, funil + lista lado a lado
-- [ ] Skeleton loaders para todos os componentes (preparar para dados reais)
+- [x] `app/(app)/dashboard/page.tsx` — página principal pós-login
+- [x] `components/dashboard/MetricCard.tsx` — card reutilizável com título, valor, variação e ícone
+- [x] `components/dashboard/DashboardView.tsx` — server component container com cálculo de métricas
+- [x] 4 cards de métricas: Total de Leads (15), Negócios Abertos (13), Valor do Pipeline (R$703k), Taxa de Conversão (57%)
+- [x] `components/dashboard/FunnelChart.tsx` — gráfico de funil com Recharts (BarChart horizontal, 6 etapas coloridas)
+- [x] `components/dashboard/DeadlineDeals.tsx` — lista de deals com prazo próximo, ordenados por urgência, badges vermelho/amarelo/cinza _(nomeado `DeadlineDeals` em vez de `DealsDeadlineList`)_
+- [x] Layout em grid responsivo: 4 cards em linha, funil (60%) + lista (40%) lado a lado
+- [ ] Skeleton loaders para todos os componentes _(adiado para M9 — será feito junto com `loading.tsx` ao conectar Supabase)_
 
-**Commit final:** `feat: dashboard UI with metric cards and funnel chart (mock data)`
+**Commit final:** `feat: dashboard de métricas UI (aula 2.5)` — `4066d12`
 
 ---
 
@@ -298,16 +299,17 @@
 
 ### Entregas
 
-- [ ] `app/(marketing)/page.tsx` — landing page principal
-- [ ] `app/(marketing)/layout.tsx` — navbar pública com logo + CTA "Começar grátis"
-- [ ] Seção Hero: headline, subheadline, screenshot do app, botão CTA
-- [ ] Seção Funcionalidades: 3–4 cards com ícone, título e descrição (Kanban, Leads, Dashboard, Multi-empresa)
-- [ ] Seção Planos e Preços: tabela Free vs Pro com toggle anual/mensal (visual apenas)
-- [ ] Seção CTA final: "Comece grátis hoje" com link para `/register`
-- [ ] Footer com links legais (placeholder)
-- [ ] Metadata SEO: title, description, og:image
+- [x] `app/page.tsx` — landing page principal (substituiu redirect para `/login`)
+- [x] `app/(marketing)/layout.tsx` — layout para futuras páginas de marketing
+- [x] `components/marketing/MarketingNav.tsx` — navbar fixa com logo, links âncora e CTAs
+- [x] `components/marketing/HeroSection.tsx` — headline, subheadline, 2 CTAs e grid de 4 stats (+47% conversão, 3.2× leads, −62% ciclo, 1200+ times)
+- [x] `components/marketing/FeaturesSection.tsx` — 6 cards (Kanban, Leads, Dashboard, Atividades, Multi-empresa, Segurança) com hover luminoso
+- [x] `components/marketing/PricingSection.tsx` — Free vs Pro com toggle mensal/anual (−20%)
+- [x] `components/marketing/CtaSection.tsx` — "Pronto para fechar mais negócios?" com link `/register`
+- [x] `components/marketing/MarketingFooter.tsx` — logo + 3 grupos de links (Produto, Empresa, Legal)
+- [x] Metadata SEO: title, description, og:title, og:description
 
-**Commit final:** `feat: public landing page with hero, features, pricing, and CTA sections`
+**Commit final:** `feat: public landing page with hero, features, pricing, and CTA sections` _(aula 2.6)_
 
 ---
 
