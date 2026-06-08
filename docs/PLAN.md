@@ -294,7 +294,7 @@
 
 ## M13 — Landing Page
 
-**Branch:** `feat/m13-landing`
+**Branch:** `feat/m13-landing` → merged em `main` via [PR #2](https://github.com/RaulAlbers/class-pipeflow-crm/pull/2)
 **Objetivo:** Página pública de marketing para conversão de novos usuários.
 
 ### Entregas
@@ -309,7 +309,7 @@
 - [x] `components/marketing/MarketingFooter.tsx` — logo + 3 grupos de links (Produto, Empresa, Legal)
 - [x] Metadata SEO: title, description, og:title, og:description
 
-**Commit final:** `feat: public landing page with hero, features, pricing, and CTA sections` _(aula 2.6)_
+**Commit final:** `feat: landing page pública — hero, features, pricing e footer (aula 2.6)` — `1cf2e0a`
 
 ---
 
