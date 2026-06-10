@@ -1,33 +1,30 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { MoreHorizontal, Pencil, Trash2, Eye, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Link from 'next/link'
+import { MoreHorizontal, Pencil, Trash2, Eye, Users } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { StatusBadge } from "@/components/leads/StatusBadge";
-import { LEAD_SOURCE_LABELS, type Lead } from "@/types/lead";
-
-function formatCurrency(value: number) {
-  return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 0 });
-}
+} from '@/components/ui/dropdown-menu'
+import { StatusBadge } from '@/components/leads/StatusBadge'
+import { LEAD_SOURCE_LABELS, type Lead } from '@/types/lead'
 
 function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" });
+  return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })
 }
 
 interface LeadTableProps {
-  leads: Lead[];
-  onEdit: (lead: Lead) => void;
-  onDelete: (lead: Lead) => void;
+  leads: Lead[]
+  isPending?: boolean
+  onEdit: (lead: Lead) => void
+  onDelete: (lead: Lead) => void
 }
 
-export function LeadTable({ leads, onEdit, onDelete }: LeadTableProps) {
+export function LeadTable({ leads, isPending = false, onEdit, onDelete }: LeadTableProps) {
   if (leads.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 gap-3 text-center">
@@ -37,11 +34,11 @@ export function LeadTable({ leads, onEdit, onDelete }: LeadTableProps) {
           <p className="text-xs text-text-muted mt-1">Tente ajustar os filtros ou cadastre um novo lead.</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
-    <div className="rounded-lg border border-border overflow-hidden">
+    <div className={`rounded-lg border border-border overflow-hidden transition-opacity ${isPending ? 'opacity-60' : ''}`}>
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-border bg-surface">
@@ -54,12 +51,6 @@ export function LeadTable({ leads, onEdit, onDelete }: LeadTableProps) {
             <th className="px-4 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wide hidden lg:table-cell">
               Origem
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wide hidden md:table-cell">
-              Responsável
-            </th>
-            <th className="px-4 py-3 text-right text-xs font-medium text-text-muted uppercase tracking-wide hidden md:table-cell">
-              Valor
-            </th>
             <th className="px-4 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wide hidden lg:table-cell">
               Cadastro
             </th>
@@ -68,55 +59,32 @@ export function LeadTable({ leads, onEdit, onDelete }: LeadTableProps) {
         </thead>
         <tbody className="divide-y divide-border">
           {leads.map((lead) => (
-            <tr
-              key={lead.id}
-              className="hover:bg-surface/50 transition-colors group"
-            >
-              {/* Lead name + company */}
+            <tr key={lead.id} className="hover:bg-surface/50 transition-colors group">
               <td className="px-4 py-3">
                 <Link href={`/leads/${lead.id}`} className="block">
                   <p className="font-medium text-text group-hover:text-primary transition-colors leading-tight">
                     {lead.name}
                   </p>
-                  <p className="text-xs text-text-muted mt-0.5">
-                    {lead.company}
-                    {lead.position && ` · ${lead.position}`}
-                  </p>
+                  {lead.company && (
+                    <p className="text-xs text-text-muted mt-0.5">{lead.company}</p>
+                  )}
                 </Link>
               </td>
 
-              {/* Status */}
               <td className="px-4 py-3 hidden sm:table-cell">
                 <StatusBadge status={lead.status} />
               </td>
 
-              {/* Source */}
               <td className="px-4 py-3 hidden lg:table-cell">
-                <span className="text-text-muted">{LEAD_SOURCE_LABELS[lead.source]}</span>
+                <span className="text-text-muted">
+                  {lead.source ? (LEAD_SOURCE_LABELS[lead.source] ?? lead.source) : '—'}
+                </span>
               </td>
 
-              {/* Assigned to */}
-              <td className="px-4 py-3 hidden md:table-cell">
-                <span className="text-text-subtle">{lead.assignedTo || "—"}</span>
-              </td>
-
-              {/* Value */}
-              <td className="px-4 py-3 text-right hidden md:table-cell">
-                {lead.value > 0 ? (
-                  <span className="font-medium text-text tabular-nums">
-                    {formatCurrency(lead.value)}
-                  </span>
-                ) : (
-                  <span className="text-text-muted">—</span>
-                )}
-              </td>
-
-              {/* Created at */}
               <td className="px-4 py-3 hidden lg:table-cell">
-                <span className="text-text-muted">{formatDate(lead.createdAt)}</span>
+                <span className="text-text-muted">{formatDate(lead.created_at)}</span>
               </td>
 
-              {/* Actions */}
               <td className="px-4 py-3">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -136,10 +104,7 @@ export function LeadTable({ leads, onEdit, onDelete }: LeadTableProps) {
                         Ver detalhes
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="flex items-center gap-2"
-                      onClick={() => onEdit(lead)}
-                    >
+                    <DropdownMenuItem className="flex items-center gap-2" onClick={() => onEdit(lead)}>
                       <Pencil className="h-4 w-4" />
                       Editar
                     </DropdownMenuItem>
@@ -159,5 +124,5 @@ export function LeadTable({ leads, onEdit, onDelete }: LeadTableProps) {
         </tbody>
       </table>
     </div>
-  );
+  )
 }

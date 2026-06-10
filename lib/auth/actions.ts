@@ -2,6 +2,7 @@
 
 import { redirect } from 'next/navigation'
 import { getSupabaseServerClient, getSupabaseAdminClient } from '@/lib/supabase/server'
+import { setActiveWorkspaceId } from '@/lib/workspace/active'
 import {
   loginSchema,
   registerSchema,
@@ -101,6 +102,8 @@ export async function createWorkspace(values: OnboardingFormValues): Promise<Err
   // use service_role to seed the free plan on workspace creation
   const admin = getSupabaseAdminClient()
   await admin.from('subscriptions').insert({ workspace_id: workspace.id })
+
+  await setActiveWorkspaceId(workspace.id)
 
   redirect('/dashboard')
 }
