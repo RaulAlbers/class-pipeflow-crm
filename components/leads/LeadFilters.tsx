@@ -1,26 +1,20 @@
-"use client";
+'use client'
 
-import { Search, X } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { LEAD_STATUS_LABELS, type LeadStatus } from "@/types/lead";
+import { Search, X } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { LEAD_STATUS_LABELS, type LeadStatus } from '@/types/lead'
 
-const ALL_STATUSES: LeadStatus[] = [
-  "novo",
-  "contato",
-  "proposta",
-  "negociacao",
-  "ganho",
-  "perdido",
-];
+const ALL_STATUSES: LeadStatus[] = ['new', 'contacted', 'qualified', 'won', 'lost']
 
 interface LeadFiltersProps {
-  search: string;
-  onSearchChange: (value: string) => void;
-  statusFilter: LeadStatus | "all";
-  onStatusFilterChange: (value: LeadStatus | "all") => void;
-  totalCount: number;
-  filteredCount: number;
+  search: string
+  onSearchChange: (value: string) => void
+  statusFilter: LeadStatus | 'all'
+  onStatusFilterChange: (value: LeadStatus | 'all') => void
+  totalCount: number
+  filteredCount: number
+  isPending?: boolean
 }
 
 export function LeadFilters({
@@ -30,12 +24,13 @@ export function LeadFilters({
   onStatusFilterChange,
   totalCount,
   filteredCount,
+  isPending = false,
 }: LeadFiltersProps) {
-  const hasActiveFilters = search !== "" || statusFilter !== "all";
+  const hasActiveFilters = search !== '' || statusFilter !== 'all'
 
   function clearFilters() {
-    onSearchChange("");
-    onStatusFilterChange("all");
+    onSearchChange('')
+    onStatusFilterChange('all')
   }
 
   return (
@@ -45,7 +40,7 @@ export function LeadFilters({
         <div className="relative flex-1 min-w-48">
           <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-text-muted pointer-events-none" />
           <Input
-            placeholder="Buscar por nome ou empresa..."
+            placeholder="Buscar por nome, empresa ou e-mail..."
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             className="pl-8"
@@ -55,11 +50,11 @@ export function LeadFilters({
         {/* Status filter chips */}
         <div className="flex flex-wrap items-center gap-1.5">
           <button
-            onClick={() => onStatusFilterChange("all")}
+            onClick={() => onStatusFilterChange('all')}
             className={`rounded-full px-3 py-1 text-xs font-medium border transition-colors ${
-              statusFilter === "all"
-                ? "bg-primary text-white border-primary"
-                : "border-border text-text-muted hover:border-border-subtle hover:text-text"
+              statusFilter === 'all'
+                ? 'bg-primary text-white border-primary'
+                : 'border-border text-text-muted hover:border-border-subtle hover:text-text'
             }`}
           >
             Todos
@@ -70,8 +65,8 @@ export function LeadFilters({
               onClick={() => onStatusFilterChange(s)}
               className={`rounded-full px-3 py-1 text-xs font-medium border transition-colors ${
                 statusFilter === s
-                  ? "bg-primary text-white border-primary"
-                  : "border-border text-text-muted hover:border-border-subtle hover:text-text"
+                  ? 'bg-primary text-white border-primary'
+                  : 'border-border text-text-muted hover:border-border-subtle hover:text-text'
               }`}
             >
               {LEAD_STATUS_LABELS[s]}
@@ -79,7 +74,6 @@ export function LeadFilters({
           ))}
         </div>
 
-        {/* Clear */}
         {hasActiveFilters && (
           <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1.5">
             <X className="h-3.5 w-3.5" />
@@ -88,12 +82,13 @@ export function LeadFilters({
         )}
       </div>
 
-      {/* Result count */}
       <p className="text-xs text-text-muted">
-        {filteredCount === totalCount
-          ? `${totalCount} lead${totalCount !== 1 ? "s" : ""}`
-          : `${filteredCount} de ${totalCount} lead${totalCount !== 1 ? "s" : ""}`}
+        {isPending ? 'Buscando...' : (
+          filteredCount === totalCount
+            ? `${totalCount} lead${totalCount !== 1 ? 's' : ''}`
+            : `${filteredCount} de ${totalCount} lead${totalCount !== 1 ? 's' : ''}`
+        )}
       </p>
     </div>
-  );
+  )
 }

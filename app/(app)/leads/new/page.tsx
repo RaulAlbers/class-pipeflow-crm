@@ -1,14 +1,13 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import { LeadForm } from "@/components/leads/LeadForm";
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
+import { LeadForm } from '@/components/leads/LeadForm'
 
-export const metadata: Metadata = { title: "Novo Lead — PipeFlow" };
+export const metadata: Metadata = { title: 'Novo Lead — PipeFlow' }
 
 export default function NewLeadPage() {
   return (
     <div className="max-w-2xl mx-auto">
-      {/* Breadcrumb */}
       <div className="mb-6">
         <Link
           href="/leads"
@@ -18,14 +17,12 @@ export default function NewLeadPage() {
           Leads
         </Link>
         <h2 className="text-base font-semibold text-text mt-2">Novo Lead</h2>
-        <p className="text-sm text-text-muted mt-0.5">
-          Preencha as informações do novo lead.
-        </p>
+        <p className="text-sm text-text-muted mt-0.5">Preencha as informações do novo lead.</p>
       </div>
 
       <div className="rounded-lg border border-border bg-surface p-6">
         <LeadForm />
       </div>
     </div>
-  );
+  )
 }

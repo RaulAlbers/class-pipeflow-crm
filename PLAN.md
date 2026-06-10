@@ -79,12 +79,28 @@ Registro de entregas por aula. Cada item marca o que foi implementado, a branch 
 
 ---
 
-## Módulo 4 — Features Core (a definir)
+## Módulo 4 — Features Core
 
-### Aula 4.x — Leads CRUD 🔜
-### Aula 4.x — Pipeline com Persistência 🔜
+### Aula 3.4 — Leads & Pipeline com Dados Reais ✅
+**Branch:** `feat/leads-data` → PR pendente
+
+- `lib/workspace/active.ts` — `getActiveWorkspaceId()` lê cookie `pipeflow_workspace_id` (fallback: primeira workspace do usuário); `setActiveWorkspaceId()` grava o cookie (chamado em `createWorkspace`)
+- `lib/leads/actions.ts` — Server Actions: `getLeads`, `searchLeads` (busca ilike no banco), `createLead`, `updateLead`, `deleteLead`
+- `lib/deals/actions.ts` — Server Actions: `getDeals` (join com leads para `lead_name`), `createDeal`, `updateDealStage` (persiste stage + position), `deleteDeal`
+- `types/lead.ts` — tipos alinhados com o DB (`LeadStatus`, `ActivityType`, `Lead`, `Activity`); mocks removidos
+- `types/deal.ts` — tipos alinhados com o DB (`Stage`, `Deal`); mocks removidos; `dealSchema` com `lead_id` e `expected_close_date`
+- `components/leads/` — todos os componentes atualizados: `StatusBadge`, `ActivityTimeline`, `LeadProfile`, `LeadForm`, `LeadTable`, `LeadFilters`, `LeadsView` (Server Actions + `useTransition` para filtros no banco)
+- `components/leads/LeadDetailClient.tsx` — novo Client Component com edição/exclusão via Server Actions
+- `components/kanban/DealCard.tsx` — usa `expected_close_date` e `lead_name`; sem campo de assignee
+- `components/kanban/DealForm.tsx` — select de leads reais; campos alinhados com o DB
+- `components/kanban/KanbanBoard.tsx` — recebe `initialDeals`, `leads`, `workspaceId`; drag-and-drop chama `updateDealStage` em background
+- `app/(app)/leads/page.tsx` — Server Component; busca leads reais
+- `app/(app)/leads/[id]/page.tsx` — Server Component; busca lead + atividades; passa para `LeadDetailClient`
+- `app/(app)/pipeline/page.tsx` — Server Component; busca deals + leads em paralelo
+- `app/(app)/dashboard/page.tsx` — métricas reais: total leads, pipeline ativo, fechados ganhos, funil por stage, breakdown por status
+
 ### Aula 4.x — Atividades 🔜
-### Aula 4.x — Dashboard com Dados Reais 🔜
+### Aula 4.x — Multi-empresa & Convites 🔜
 
 ---
 
