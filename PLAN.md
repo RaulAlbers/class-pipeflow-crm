@@ -82,7 +82,7 @@ Registro de entregas por aula. Cada item marca o que foi implementado, a branch 
 ## Módulo 4 — Features Core
 
 ### Aula 3.4 — Leads & Pipeline com Dados Reais ✅
-**Branch:** `feat/leads-data` → PR pendente
+**Branch:** `feat/leads-data` → PR #6 mergeado em `main`
 
 - `lib/workspace/active.ts` — `getActiveWorkspaceId()` lê cookie `pipeflow_workspace_id` (fallback: primeira workspace do usuário); `setActiveWorkspaceId()` grava o cookie (chamado em `createWorkspace`)
 - `lib/leads/actions.ts` — Server Actions: `getLeads`, `searchLeads` (busca ilike no banco), `createLead`, `updateLead`, `deleteLead`
