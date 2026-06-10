@@ -64,16 +64,18 @@ Registro de entregas por aula. Cada item marca o que foi implementado, a branch 
 - `types/supabase.ts` — tipos `Database`, `Tables<T>`, `TablesInsert<T>`, `TablesUpdate<T>` + aliases de domínio
 - `scripts/apply-migrations.mjs` — script de aplicação automática via Management API / Supabase CLI
 
-### Aula 3.3 — Auth UI (Login / Registro) 🔜
-- Formulários de login e registro em `app/(auth)/`
-- Validação com Zod + react-hook-form
-- Server Actions para `signIn` e `signUp`
-- Workspace criado automaticamente no primeiro login
-
-### Aula 3.4 — Middleware & Proteção de Rotas 🔜
-- `middleware.ts` para refresh de sessão Supabase
-- Redirect para `/login` se não autenticado
-- Redirect para `/dashboard` se já logado e acessar rota pública
+### Aula 3.3 — Auth Real & Proteção de Rotas ✅
+**Branch:** `feat/supabase-core` (em progresso)
+- `lib/supabase/middleware.ts` — `updateSession` com `getUser()` (valida token no servidor, nunca `getSession()`)
+- `proxy.ts` — proteção de rotas: `/(app)/*` exige sessão; `/(auth)/*` redireciona autenticados para `/dashboard` (Next.js 16 renomeou `middleware.ts` → `proxy.ts`)
+- `app/api/auth/callback/route.ts` — troca code PKCE por sessão; suporte a email confirmation
+- `lib/auth/actions.ts` — Server Actions: `signIn`, `signUp`, `signOut`, `createWorkspace`
+- `app/(auth)/login/page.tsx` e `register/page.tsx` — conectados ao Supabase Auth real; exibem erros inline; tela "confirme seu e-mail" quando confirmação está ativa
+- `app/(app)/onboarding/page.tsx` — cria workspace + workspace_member (admin) + subscription free (via service_role) no banco
+- `components/shared/WorkspaceSwitcher.tsx` — dados reais do banco (sem mocks)
+- `components/shared/UserMenu.tsx` — usuário real + logout via `signOut` Server Action
+- `app/(app)/layout.tsx` — async Server Component; busca usuário e workspaces com RLS
+- `supabase/migrations/008_rls_hardening.sql` — best practices: `TO authenticated` em todas as policies; `FORCE ROW LEVEL SECURITY`; covering index + partial index em `workspace_members`
 
 ---
 

@@ -5,6 +5,8 @@ import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { SidebarContent } from "@/components/shared/Sidebar";
 import { useState, useEffect } from "react";
+import type { WorkspaceOption } from "@/components/shared/WorkspaceSwitcher";
+import type { UserInfo } from "@/components/shared/UserMenu";
 
 const PAGE_TITLES: Record<string, string> = {
   "/dashboard":   "Dashboard",
@@ -23,9 +25,11 @@ function getTitle(pathname: string): string {
 
 interface TopBarProps {
   actions?: React.ReactNode;
+  user: UserInfo;
+  workspaces: WorkspaceOption[];
 }
 
-export function TopBar({ actions }: TopBarProps) {
+export function TopBar({ actions, user, workspaces }: TopBarProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -47,7 +51,7 @@ export function TopBar({ actions }: TopBarProps) {
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent side="left" className="p-0 w-64" showClose={false}>
           <SheetTitle className="sr-only">Menu de navegação</SheetTitle>
-          <SidebarContent />
+          <SidebarContent user={user} workspaces={workspaces} />
         </SheetContent>
       </Sheet>
 

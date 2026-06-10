@@ -3,31 +3,73 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
+import { Loader2, MailCheck } from "lucide-react";
 import { registerSchema, type RegisterFormValues } from "@/types/auth";
+import { signUp } from "@/lib/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function RegisterPage() {
-  const router = useRouter();
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [checkEmail, setCheckEmail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
   });
 
-  async function onSubmit(_values: RegisterFormValues) {
+  async function onSubmit(values: RegisterFormValues) {
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    router.push("/onboarding");
+    setServerError(null);
+    const result = await signUp(values);
+    if (result && "checkEmail" in result) {
+      setCheckEmail(true);
+      setIsLoading(false);
+      return;
+    }
+    if (result?.error) {
+      setServerError(result.error);
+      setIsLoading(false);
+    }
+    // On success (email confirmation disabled), signUp() calls redirect()
+  }
+
+  if (checkEmail) {
+    return (
+      <div className="w-full max-w-sm space-y-6 text-center">
+        <div className="flex justify-center">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/15">
+            <MailCheck className="h-7 w-7 text-primary" />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <h2 className="text-2xl font-bold text-text">Confirme seu e-mail</h2>
+          <p className="text-sm text-text-subtle">
+            Enviamos um link de confirmação para{" "}
+            <span className="font-medium text-text">{getValues("email")}</span>.
+            Clique no link para ativar sua conta.
+          </p>
+        </div>
+        <p className="text-xs text-text-muted">
+          Não recebeu?{" "}
+          <button
+            type="button"
+            onClick={() => setCheckEmail(false)}
+            className="text-primary hover:underline underline-offset-4"
+          >
+            Tentar novamente
+          </button>
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -107,6 +149,12 @@ export default function RegisterPage() {
             <p className="text-xs text-danger">{errors.confirmPassword.message}</p>
           )}
         </div>
+
+        {serverError && (
+          <p className="rounded-md bg-danger/10 px-3 py-2 text-sm text-danger">
+            {serverError}
+          </p>
+        )}
 
         <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
           {isLoading ? (

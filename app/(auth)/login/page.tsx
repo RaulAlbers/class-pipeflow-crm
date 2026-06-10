@@ -3,16 +3,16 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { loginSchema, type LoginFormValues } from "@/types/auth";
+import { signIn } from "@/lib/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function LoginPage() {
-  const router = useRouter();
+  const [serverError, setServerError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -24,10 +24,15 @@ export default function LoginPage() {
     defaultValues: { email: "", password: "" },
   });
 
-  async function onSubmit(_values: LoginFormValues) {
+  async function onSubmit(values: LoginFormValues) {
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    router.push("/dashboard");
+    setServerError(null);
+    const result = await signIn(values);
+    if (result?.error) {
+      setServerError(result.error);
+      setIsLoading(false);
+    }
+    // On success, signIn() calls redirect() — no need to handle here
   }
 
   return (
@@ -85,6 +90,12 @@ export default function LoginPage() {
             <p className="text-xs text-danger">{errors.password.message}</p>
           )}
         </div>
+
+        {serverError && (
+          <p className="rounded-md bg-danger/10 px-3 py-2 text-sm text-danger">
+            {serverError}
+          </p>
+        )}
 
         <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
           {isLoading ? (
