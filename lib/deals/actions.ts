@@ -61,7 +61,7 @@ export async function createDeal(values: DealFormValues): Promise<ActionResult<D
       .insert({
         workspace_id:        workspaceId,
         owner_id:            user?.id ?? null,
-        lead_id:             parsed.data.lead_id,
+        lead_id:             parsed.data.lead_id || null,
         title:               parsed.data.title,
         value:               parsed.data.value,
         stage:               parsed.data.stage,
