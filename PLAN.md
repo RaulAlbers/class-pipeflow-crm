@@ -51,10 +51,18 @@ Registro de entregas por aula. Cada item marca o que foi implementado, a branch 
 - `.gitignore` cobre `.env*` — chaves nunca commitadas
 - Build TypeScript sem erros confirmado
 
-### Aula 3.2 — Middleware & Proteção de Rotas 🔜
-- `middleware.ts` (ou `proxy.ts` — Next.js 16) para refresh de sessão
-- Redirect para `/login` se não autenticado
-- Redirect para `/dashboard` se já logado e acessar rota pública
+### Aula 3.2 — Migrations & Segurança RLS ✅
+**Branch:** `feat/supabase-core` (continuação)
+- `supabase/migrations/001_init.sql` — extensão uuid-ossp + função `handle_updated_at` + helper `is_workspace_member` (SECURITY DEFINER)
+- `supabase/migrations/002_workspaces.sql` — tabela + RLS (insert autenticado, select/update/delete por membership)
+- `supabase/migrations/003_workspace_members.sql` — tabela + índices compostos + RLS (admins gerenciam, usuário sai sozinho)
+- `supabase/migrations/004_leads.sql` — tabela + índices + RLS por workspace
+- `supabase/migrations/005_deals.sql` — tabela + índice Kanban (workspace, stage, position) + RLS
+- `supabase/migrations/006_activities.sql` — tabela + índice timeline DESC + RLS
+- `supabase/migrations/007_subscriptions.sql` — tabela + RLS read-only; writes apenas via service_role (webhook Stripe)
+- `supabase/migrations/combined.sql` — SQL unificado para aplicar no SQL Editor do Supabase Studio
+- `types/supabase.ts` — tipos `Database`, `Tables<T>`, `TablesInsert<T>`, `TablesUpdate<T>` + aliases de domínio
+- `scripts/apply-migrations.mjs` — script de aplicação automática via Management API / Supabase CLI
 
 ### Aula 3.3 — Auth UI (Login / Registro) 🔜
 - Formulários de login e registro em `app/(auth)/`
@@ -62,10 +70,10 @@ Registro de entregas por aula. Cada item marca o que foi implementado, a branch 
 - Server Actions para `signIn` e `signUp`
 - Workspace criado automaticamente no primeiro login
 
-### Aula 3.4 — Schema do Banco 🔜
-- Migrations SQL: `workspaces`, `workspace_members`, `leads`, `deals`, `activities`
-- RLS policies por `workspace_id`
-- Tipos TypeScript gerados a partir do schema Supabase
+### Aula 3.4 — Middleware & Proteção de Rotas 🔜
+- `middleware.ts` para refresh de sessão Supabase
+- Redirect para `/login` se não autenticado
+- Redirect para `/dashboard` se já logado e acessar rota pública
 
 ---
 
