@@ -3,15 +3,15 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { Loader2, Building2, ArrowRight } from "lucide-react";
 import { onboardingSchema, type OnboardingFormValues } from "@/types/auth";
+import { createWorkspace } from "@/lib/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function OnboardingPage() {
-  const router = useRouter();
+  const [serverError, setServerError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -23,10 +23,15 @@ export default function OnboardingPage() {
     defaultValues: { workspaceName: "" },
   });
 
-  async function onSubmit(_values: OnboardingFormValues) {
+  async function onSubmit(values: OnboardingFormValues) {
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    router.push("/dashboard");
+    setServerError(null);
+    const result = await createWorkspace(values);
+    if (result?.error) {
+      setServerError(result.error);
+      setIsLoading(false);
+    }
+    // On success, createWorkspace() calls redirect('/dashboard')
   }
 
   return (
@@ -86,6 +91,12 @@ export default function OnboardingPage() {
               </p>
             )}
           </div>
+
+          {serverError && (
+            <p className="rounded-md bg-danger/10 px-3 py-2 text-sm text-danger">
+              {serverError}
+            </p>
+          )}
 
           <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
             {isLoading ? (

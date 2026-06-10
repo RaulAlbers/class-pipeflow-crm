@@ -12,21 +12,47 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const MOCK_WORKSPACES = [
-  { id: "1", name: "Acme Corp",      plan: "Pro",   initials: "AC" },
-  { id: "2", name: "Beta Ventures",  plan: "Free",  initials: "BV" },
-  { id: "3", name: "Gamma Solutions",plan: "Pro",   initials: "GS" },
-];
+export type WorkspaceOption = {
+  id: string;
+  name: string;
+  plan: string;
+};
 
-export function WorkspaceSwitcher() {
-  const [current, setCurrent] = useState(MOCK_WORKSPACES[0]);
+interface WorkspaceSwitcherProps {
+  workspaces: WorkspaceOption[];
+}
+
+function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((n) => n[0].toUpperCase())
+    .join("");
+}
+
+export function WorkspaceSwitcher({ workspaces }: WorkspaceSwitcherProps) {
+  const [current, setCurrent] = useState<WorkspaceOption | null>(
+    workspaces[0] ?? null,
+  );
+
+  if (!current) {
+    return (
+      <button className="flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-sm text-text-muted">
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-overlay text-[10px]">
+          ?
+        </span>
+        <span className="flex-1 truncate text-left">Sem workspace</span>
+      </button>
+    );
+  }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-sm hover:bg-overlay transition-colors focus:outline-none group">
           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-primary text-[10px] font-bold text-white">
-            {current.initials}
+            {getInitials(current.name)}
           </span>
           <span className="flex-1 truncate text-left font-medium text-text">
             {current.name}
@@ -39,18 +65,20 @@ export function WorkspaceSwitcher() {
         <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
-        {MOCK_WORKSPACES.map((ws) => (
+        {workspaces.map((ws) => (
           <DropdownMenuItem
             key={ws.id}
             onSelect={() => setCurrent(ws)}
             className="gap-2.5"
           >
             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-primary/80 text-[10px] font-bold text-white">
-              {ws.initials}
+              {getInitials(ws.name)}
             </span>
             <div className="flex flex-1 flex-col">
               <span className="text-sm leading-none">{ws.name}</span>
-              <span className="mt-0.5 text-xs text-text-muted">{ws.plan}</span>
+              <span className="mt-0.5 text-xs text-text-muted capitalize">
+                {ws.plan}
+              </span>
             </div>
             {ws.id === current.id && (
               <Check className="h-3.5 w-3.5 text-primary" />

@@ -11,8 +11,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
-import { WorkspaceSwitcher } from "@/components/shared/WorkspaceSwitcher";
-import { UserMenu } from "@/components/shared/UserMenu";
+import { WorkspaceSwitcher, type WorkspaceOption } from "@/components/shared/WorkspaceSwitcher";
+import { UserMenu, type UserInfo } from "@/components/shared/UserMenu";
 
 const NAV_ITEMS = [
   { href: "/dashboard",   label: "Dashboard",    icon: LayoutDashboard },
@@ -57,7 +57,12 @@ function NavItem({
   );
 }
 
-export function SidebarContent() {
+interface SidebarContentProps {
+  user: UserInfo;
+  workspaces: WorkspaceOption[];
+}
+
+export function SidebarContent({ user, workspaces }: SidebarContentProps) {
   const pathname = usePathname();
 
   return (
@@ -77,7 +82,7 @@ export function SidebarContent() {
 
       {/* Workspace Switcher */}
       <div className="px-2 pt-3 pb-2 shrink-0">
-        <WorkspaceSwitcher />
+        <WorkspaceSwitcher workspaces={workspaces} />
       </div>
 
       <Separator />
@@ -110,7 +115,7 @@ export function SidebarContent() {
 
       {/* User Menu */}
       <div className="px-2 py-3 shrink-0">
-        <UserMenu />
+        <UserMenu user={user} />
       </div>
     </div>
   );
