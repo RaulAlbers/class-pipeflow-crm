@@ -65,7 +65,7 @@ Registro de entregas por aula. Cada item marca o que foi implementado, a branch 
 - `scripts/apply-migrations.mjs` — script de aplicação automática via Management API / Supabase CLI
 
 ### Aula 3.3 — Auth Real & Proteção de Rotas ✅
-**Branch:** `feat/supabase-core` (em progresso)
+**Branch:** `feat/auth-real` → PR #5 mergeado em `main`
 - `lib/supabase/middleware.ts` — `updateSession` com `getUser()` (valida token no servidor, nunca `getSession()`)
 - `proxy.ts` — proteção de rotas: `/(app)/*` exige sessão; `/(auth)/*` redireciona autenticados para `/dashboard` (Next.js 16 renomeou `middleware.ts` → `proxy.ts`)
 - `app/api/auth/callback/route.ts` — troca code PKCE por sessão; suporte a email confirmation
