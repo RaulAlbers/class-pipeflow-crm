@@ -52,7 +52,7 @@ Registro de entregas por aula. Cada item marca o que foi implementado, a branch 
 - Build TypeScript sem erros confirmado
 
 ### Aula 3.2 — Migrations & Segurança RLS ✅
-**Branch:** `feat/supabase-core` (continuação)
+**Branch:** `feat/supabase-migrations` → PR #4 mergeado
 - `supabase/migrations/001_init.sql` — extensão uuid-ossp + função `handle_updated_at` + helper `is_workspace_member` (SECURITY DEFINER)
 - `supabase/migrations/002_workspaces.sql` — tabela + RLS (insert autenticado, select/update/delete por membership)
 - `supabase/migrations/003_workspace_members.sql` — tabela + índices compostos + RLS (admins gerenciam, usuário sai sozinho)
