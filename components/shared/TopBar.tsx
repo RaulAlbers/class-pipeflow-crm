@@ -24,12 +24,13 @@ function getTitle(pathname: string): string {
 }
 
 interface TopBarProps {
-  actions?: React.ReactNode;
-  user: UserInfo;
-  workspaces: WorkspaceOption[];
+  actions?:           React.ReactNode;
+  user:               UserInfo;
+  workspaces:         WorkspaceOption[];
+  activeWorkspaceId?: string | null;
 }
 
-export function TopBar({ actions, user, workspaces }: TopBarProps) {
+export function TopBar({ actions, user, workspaces, activeWorkspaceId }: TopBarProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -51,7 +52,7 @@ export function TopBar({ actions, user, workspaces }: TopBarProps) {
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent side="left" className="p-0 w-64" showClose={false}>
           <SheetTitle className="sr-only">Menu de navegação</SheetTitle>
-          <SidebarContent user={user} workspaces={workspaces} />
+          <SidebarContent user={user} workspaces={workspaces} activeWorkspaceId={activeWorkspaceId} />
         </SheetContent>
       </Sheet>
 

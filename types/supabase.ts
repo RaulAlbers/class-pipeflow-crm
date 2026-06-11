@@ -16,6 +16,79 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      profiles: {
+        Row: {
+          id:         string
+          email:      string
+          full_name:  string | null
+          updated_at: string
+        }
+        Insert: {
+          id:          string
+          email:       string
+          full_name?:  string | null
+          updated_at?: string
+        }
+        Update: {
+          id?:         string
+          email?:      string
+          full_name?:  string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'profiles_id_fkey'
+            columns:        ['id']
+            referencedRelation: 'users'
+            referencedColumns:  ['id']
+          }
+        ]
+      }
+
+      workspace_invites: {
+        Row: {
+          id:           string
+          workspace_id: string
+          email:        string
+          role:         'admin' | 'member'
+          token:        string
+          invited_by:   string
+          accepted_at:  string | null
+          expires_at:   string
+          created_at:   string
+        }
+        Insert: {
+          id?:           string
+          workspace_id:  string
+          email:         string
+          role?:         'admin' | 'member'
+          token?:        string
+          invited_by:    string
+          accepted_at?:  string | null
+          expires_at?:   string
+          created_at?:   string
+        }
+        Update: {
+          id?:           string
+          workspace_id?: string
+          email?:        string
+          role?:         'admin' | 'member'
+          token?:        string
+          invited_by?:   string
+          accepted_at?:  string | null
+          expires_at?:   string
+          created_at?:   string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'workspace_invites_workspace_id_fkey'
+            columns:        ['workspace_id']
+            referencedRelation: 'workspaces'
+            referencedColumns:  ['id']
+          }
+        ]
+      }
+
       workspaces: {
         Row: {
           id:         string
@@ -351,15 +424,19 @@ export type DbResultOk<T> = T extends PromiseLike<{ data: infer U }> ? Exclude<U
 
 // ── Aliases das tabelas ───────────────────────────────────────────────────────
 
+export type Profile          = Tables<'profiles'>
 export type Workspace        = Tables<'workspaces'>
 export type WorkspaceMember  = Tables<'workspace_members'>
+export type WorkspaceInvite  = Tables<'workspace_invites'>
 export type Lead             = Tables<'leads'>
 export type Deal             = Tables<'deals'>
 export type Activity         = Tables<'activities'>
 export type Subscription     = Tables<'subscriptions'>
 
+export type ProfileInsert         = TablesInsert<'profiles'>
 export type WorkspaceInsert       = TablesInsert<'workspaces'>
 export type WorkspaceMemberInsert = TablesInsert<'workspace_members'>
+export type WorkspaceInviteInsert = TablesInsert<'workspace_invites'>
 export type LeadInsert            = TablesInsert<'leads'>
 export type DealInsert            = TablesInsert<'deals'>
 export type ActivityInsert        = TablesInsert<'activities'>

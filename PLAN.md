@@ -99,6 +99,23 @@ Registro de entregas por aula. Cada item marca o que foi implementado, a branch 
 - `app/(app)/pipeline/page.tsx` — Server Component; busca deals + leads em paralelo
 - `app/(app)/dashboard/page.tsx` — métricas reais: total leads, pipeline ativo, fechados ganhos, funil por stage, breakdown por status
 
+### Aula 3.5 — Workspace & Colaboração ✅
+**Branch:** `feat/collaboration` → PR pendente
+
+- `supabase/migrations/009_workspace_invites.sql` — tabela `profiles` (espelho de auth.users + trigger on_auth_user_created + backfill) + tabela `workspace_invites` (token, expires_at, accepted_at, RLS admin-only insert/delete)
+- `types/supabase.ts` — adicionados tipos `Profile`, `WorkspaceInvite` e aliases
+- `lib/resend/client.ts` — singleton Resend lazy
+- `lib/resend/invite-email.ts` — template HTML do e-mail de convite (sem dependência react-email)
+- `lib/workspace/member-actions.ts` — Server Actions: `listMembers`, `listPendingInvites`, `inviteMember` (enforcement Free ≤ 2 membros + Resend), `revokeInvite`, `removeMember`, `updateMemberRole`, `acceptInvite`
+- `lib/workspace/workspace-actions.ts` — Server Actions: `switchWorkspace` (grava cookie + revalida layout), `updateWorkspaceName`
+- `proxy.ts` — `/invite/*` adicionado às rotas públicas
+- `components/shared/WorkspaceSwitcher.tsx` — conectado a `switchWorkspace` + `router.refresh()` para troca real de workspace
+- `app/(auth)/invite/[token]/page.tsx` — página pública: auto-aceite (e-mail match), mismatch de conta, login/register quando não autenticado
+- `components/settings/WorkspaceSettingsForm.tsx` — editar nome (admin-only), badge de plano
+- `components/settings/MembersTable.tsx` — lista membros + convites pendentes, promover/rebaixar/remover (admin-only)
+- `components/settings/InviteForm.tsx` — convidar por e-mail com seletor de role; lock quando Free atingiu limite
+- `app/(app)/settings/page.tsx` — tabs URL-driven (Workspace / Membros); Server Component busca todos os dados
+
 ### Aula 4.x — Atividades 🔜
 ### Aula 4.x — Multi-empresa & Convites 🔜
 

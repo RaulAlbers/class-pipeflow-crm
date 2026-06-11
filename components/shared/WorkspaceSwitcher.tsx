@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { Check, ChevronsUpDown, Plus } from "lucide-react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { Check, ChevronsUpDown, Loader2, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -11,15 +12,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { switchWorkspace } from "@/lib/workspace/workspace-actions";
 
 export type WorkspaceOption = {
-  id: string;
+  id:   string;
   name: string;
   plan: string;
 };
 
 interface WorkspaceSwitcherProps {
-  workspaces: WorkspaceOption[];
+  workspaces:        WorkspaceOption[];
+  activeWorkspaceId: string | null;
 }
 
 function getInitials(name: string): string {
@@ -31,10 +34,22 @@ function getInitials(name: string): string {
     .join("");
 }
 
-export function WorkspaceSwitcher({ workspaces }: WorkspaceSwitcherProps) {
-  const [current, setCurrent] = useState<WorkspaceOption | null>(
-    workspaces[0] ?? null,
-  );
+export function WorkspaceSwitcher({ workspaces, activeWorkspaceId }: WorkspaceSwitcherProps) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [optimisticId, setOptimisticId] = useState<string | null>(null);
+
+  const currentId = optimisticId ?? activeWorkspaceId ?? workspaces[0]?.id ?? null;
+  const current   = workspaces.find((ws) => ws.id === currentId) ?? workspaces[0] ?? null;
+
+  function handleSwitch(ws: WorkspaceOption) {
+    if (ws.id === currentId) return;
+    setOptimisticId(ws.id);
+    startTransition(async () => {
+      await switchWorkspace(ws.id);
+      router.refresh();
+    });
+  }
 
   if (!current) {
     return (
@@ -57,7 +72,11 @@ export function WorkspaceSwitcher({ workspaces }: WorkspaceSwitcherProps) {
           <span className="flex-1 truncate text-left font-medium text-text">
             {current.name}
           </span>
-          <ChevronsUpDown className="h-3.5 w-3.5 text-text-muted shrink-0 group-hover:text-text-subtle transition-colors" />
+          {isPending ? (
+            <Loader2 className="h-3.5 w-3.5 text-text-muted shrink-0 animate-spin" />
+          ) : (
+            <ChevronsUpDown className="h-3.5 w-3.5 text-text-muted shrink-0 group-hover:text-text-subtle transition-colors" />
+          )}
         </button>
       </DropdownMenuTrigger>
 
@@ -68,7 +87,7 @@ export function WorkspaceSwitcher({ workspaces }: WorkspaceSwitcherProps) {
         {workspaces.map((ws) => (
           <DropdownMenuItem
             key={ws.id}
-            onSelect={() => setCurrent(ws)}
+            onSelect={() => handleSwitch(ws)}
             className="gap-2.5"
           >
             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-primary/80 text-[10px] font-bold text-white">
@@ -80,7 +99,7 @@ export function WorkspaceSwitcher({ workspaces }: WorkspaceSwitcherProps) {
                 {ws.plan}
               </span>
             </div>
-            {ws.id === current.id && (
+            {ws.id === currentId && (
               <Check className="h-3.5 w-3.5 text-primary" />
             )}
           </DropdownMenuItem>
