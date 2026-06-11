@@ -100,7 +100,7 @@ Registro de entregas por aula. Cada item marca o que foi implementado, a branch 
 - `app/(app)/dashboard/page.tsx` — métricas reais: total leads, pipeline ativo, fechados ganhos, funil por stage, breakdown por status
 
 ### Aula 3.5 — Workspace & Colaboração ✅
-**Branch:** `feat/collaboration` → PR pendente
+**Branch:** `feat/collaboration` → PR #7 mergeado
 
 - `supabase/migrations/009_workspace_invites.sql` — tabela `profiles` (espelho de auth.users + trigger on_auth_user_created + backfill) + tabela `workspace_invites` (token, expires_at, accepted_at, RLS admin-only insert/delete)
 - `types/supabase.ts` — adicionados tipos `Profile`, `WorkspaceInvite` e aliases
