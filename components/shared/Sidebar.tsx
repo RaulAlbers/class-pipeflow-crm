@@ -58,11 +58,12 @@ function NavItem({
 }
 
 interface SidebarContentProps {
-  user: UserInfo;
-  workspaces: WorkspaceOption[];
+  user:               UserInfo;
+  workspaces:         WorkspaceOption[];
+  activeWorkspaceId?: string | null;
 }
 
-export function SidebarContent({ user, workspaces }: SidebarContentProps) {
+export function SidebarContent({ user, workspaces, activeWorkspaceId }: SidebarContentProps) {
   const pathname = usePathname();
 
   return (
@@ -82,7 +83,7 @@ export function SidebarContent({ user, workspaces }: SidebarContentProps) {
 
       {/* Workspace Switcher */}
       <div className="px-2 pt-3 pb-2 shrink-0">
-        <WorkspaceSwitcher workspaces={workspaces} />
+        <WorkspaceSwitcher workspaces={workspaces} activeWorkspaceId={activeWorkspaceId ?? null} />
       </div>
 
       <Separator />

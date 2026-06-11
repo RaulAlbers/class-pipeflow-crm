@@ -427,4 +427,82 @@ CREATE INDEX IF NOT EXISTS idx_wm_admins
   ON public.workspace_members (workspace_id)
   WHERE role = 'admin';
 
+-- 009: Profiles + Workspace Invites
+
+CREATE TABLE IF NOT EXISTS public.profiles (
+  id         uuid        PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  email      text        NOT NULL,
+  full_name  text,
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
+
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "profiles_select"
+  ON public.profiles FOR SELECT TO authenticated USING (true);
+
+CREATE POLICY "profiles_update"
+  ON public.profiles FOR UPDATE TO authenticated
+  USING  (id = (SELECT auth.uid()))
+  WITH CHECK (id = (SELECT auth.uid()));
+
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public
+AS $$
+BEGIN
+  INSERT INTO public.profiles (id, email, full_name)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'full_name', split_part(NEW.email, '@', 1))
+  )
+  ON CONFLICT (id) DO NOTHING;
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+INSERT INTO public.profiles (id, email, full_name)
+SELECT id, email,
+  COALESCE(raw_user_meta_data->>'full_name', split_part(email, '@', 1))
+FROM auth.users
+ON CONFLICT (id) DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS public.workspace_invites (
+  id           uuid        PRIMARY KEY DEFAULT gen_random_uuid(),
+  workspace_id uuid        NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
+  email        text        NOT NULL,
+  role         text        NOT NULL DEFAULT 'member' CHECK (role IN ('admin', 'member')),
+  token        uuid        NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+  invited_by   uuid        NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  accepted_at  timestamptz,
+  expires_at   timestamptz NOT NULL DEFAULT (now() + INTERVAL '7 days'),
+  created_at   timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_wi_workspace_email_pending
+  ON public.workspace_invites (workspace_id, lower(email))
+  WHERE accepted_at IS NULL;
+
+CREATE INDEX IF NOT EXISTS idx_wi_token        ON public.workspace_invites (token);
+CREATE INDEX IF NOT EXISTS idx_wi_workspace_id ON public.workspace_invites (workspace_id);
+
+ALTER TABLE public.workspace_invites ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "workspace_invites_select"
+  ON public.workspace_invites FOR SELECT TO authenticated
+  USING (public.is_workspace_member(workspace_id));
+
+CREATE POLICY "workspace_invites_insert"
+  ON public.workspace_invites FOR INSERT TO authenticated
+  WITH CHECK (public.is_workspace_member(workspace_id, 'admin'));
+
+CREATE POLICY "workspace_invites_delete"
+  ON public.workspace_invites FOR DELETE TO authenticated
+  USING (public.is_workspace_member(workspace_id, 'admin'));
+
 COMMIT;

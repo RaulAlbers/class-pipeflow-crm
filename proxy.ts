@@ -16,7 +16,8 @@ export async function proxy(request: NextRequest) {
 
   const { response, user } = await updateSession(request)
 
-  const isPublic  = PUBLIC_PATHS.has(pathname)
+  // /invite/[token] is public — unauthenticated users see the page and are asked to log in
+  const isPublic  = PUBLIC_PATHS.has(pathname) || pathname.startsWith('/invite/')
   const isAuthPath = AUTH_PATHS.has(pathname)
 
   // Unauthenticated user trying to reach a protected route

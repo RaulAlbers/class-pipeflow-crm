@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { getActiveWorkspaceId } from "@/lib/workspace/active";
 import { SidebarContent } from "@/components/shared/Sidebar";
 import { TopBar } from "@/components/shared/TopBar";
 import type { WorkspaceOption } from "@/components/shared/WorkspaceSwitcher";
@@ -38,6 +39,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     };
   });
 
+  const activeWorkspaceId = await getActiveWorkspaceId();
+
   const displayName =
     (user.user_metadata?.full_name as string | undefined) ??
     user.email?.split("@")[0] ??
@@ -54,12 +57,12 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     <div className="flex h-full">
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex lg:w-64 lg:shrink-0 lg:flex-col bg-sidebar border-r border-border">
-        <SidebarContent user={userInfo} workspaces={workspaces} />
+        <SidebarContent user={userInfo} workspaces={workspaces} activeWorkspaceId={activeWorkspaceId} />
       </aside>
 
       {/* Main area */}
       <div className="flex flex-1 flex-col min-w-0">
-        <TopBar user={userInfo} workspaces={workspaces} />
+        <TopBar user={userInfo} workspaces={workspaces} activeWorkspaceId={activeWorkspaceId} />
         <main className="flex-1 overflow-y-auto p-6">
           {children}
         </main>
